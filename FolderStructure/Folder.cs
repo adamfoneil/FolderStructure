@@ -2,10 +2,6 @@
 {
     public class Folder<T>
     {
-        private Folder()
-        {
-        }
-
         /// <summary>
         /// if not null, then it's a leaf item
         /// </summary>
