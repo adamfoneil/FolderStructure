@@ -41,7 +41,5 @@ namespace Test
             /// </summary>
             public string Href { get; set; } = default!;
         }
-
-
     }
 }
