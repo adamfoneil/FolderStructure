@@ -7,7 +7,7 @@ Install via NuGet package from my [personal NuGet feed](https://aosoftware.blob.
 There's a single public object: [Folder](https://github.com/adamfoneil/FolderStructure/blob/master/FolderStructure/Folder.cs). You initialize it from any `IEnumerable<T>` like this, taken from the [test](https://github.com/adamfoneil/FolderStructure/blob/master/Test/SampleStructures.cs#L10). For example, here I have an array of [NavEntry](https://github.com/adamfoneil/FolderStructure/blob/master/Test/SampleStructures.cs#L32) objects, and I'm converting it to a folder structure by `Route`:
 
 ```csharp
- var routes = new NavEntry[]
+var routes = new NavEntry[]
 {
     new NavEntry() { Route = "Welcome", Href = "/help/kb/welcome.html" },
     new NavEntry() { Route = "Setup/This", Href = "/help/kb/setup/this.html" },
