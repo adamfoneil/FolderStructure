@@ -11,6 +11,14 @@
     <Description>Build recursive folder structures from IEnumerable&lt;T&gt;</Description>
     <Copyright>Copyright (c) 2022 Adam O'Neil</Copyright>
     <PackageProjectUrl>https://github.com/adamfoneil/FolderStructure</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
