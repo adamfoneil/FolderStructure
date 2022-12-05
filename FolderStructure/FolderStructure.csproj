@@ -10,6 +10,7 @@
     <Authors>Adam O'Neil</Authors>
     <Description>Build recursive folder structures from IEnumerable&lt;T&gt;</Description>
     <Copyright>Copyright (c) 2022 Adam O'Neil</Copyright>
+    <PackageProjectUrl>https://github.com/adamfoneil/FolderStructure</PackageProjectUrl>
   </PropertyGroup>
 
 </Project>
