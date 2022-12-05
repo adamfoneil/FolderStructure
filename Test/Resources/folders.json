@@ -1,0 +1,66 @@
+{
+  "Data": null,
+  "Name": "root",
+  "Children": [
+    {
+      "Data": {
+        "Route": "Welcome",
+        "Href": "/help/kb/welcome.html"
+      },
+      "Name": "Welcome",
+      "Children": []
+    },
+    {
+      "Data": null,
+      "Name": "Setup",
+      "Children": [
+        {
+          "Data": {
+            "Route": "Setup/This",
+            "Href": "/help/kb/setup/this.html"
+          },
+          "Name": "This",
+          "Children": []
+        },
+        {
+          "Data": {
+            "Route": "Setup/That",
+            "Href": "/help/kb/setup/that.html"
+          },
+          "Name": "That",
+          "Children": []
+        },
+        {
+          "Data": {
+            "Route": "Setup/Other",
+            "Href": "/help/kb/setup/other.html"
+          },
+          "Name": "Other",
+          "Children": []
+        }
+      ]
+    },
+    {
+      "Data": null,
+      "Name": "Ops",
+      "Children": [
+        {
+          "Data": {
+            "Route": "Ops/Thing1",
+            "Href": "/help/kb/ops/thing1.html"
+          },
+          "Name": "Thing1",
+          "Children": []
+        },
+        {
+          "Data": {
+            "Route": "Ops/Thing2",
+            "Href": "/help/kb/ops/thing2.html"
+          },
+          "Name": "Thing2",
+          "Children": []
+        }
+      ]
+    }
+  ]
+}
