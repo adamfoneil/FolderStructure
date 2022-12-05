@@ -12,6 +12,8 @@
     <Copyright>Copyright (c) 2022 Adam O'Neil</Copyright>
     <PackageProjectUrl>https://github.com/adamfoneil/FolderStructure</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/adamfoneil/FolderStructure</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
