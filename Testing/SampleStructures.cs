@@ -19,19 +19,6 @@ public class SampleStructures
 	];
 
     [TestMethod]
-    public void BuildOldNavStructure()
-    {
-        var folder = FolderOld<NavEntry>.From(Routes, r => r.Route);
-
-        var json = JsonSerializer.Serialize(folder, new JsonSerializerOptions()
-        {
-            WriteIndented = true
-        });
-
-        Assert.IsTrue(json.Equals(Static.GetResource("Test.Resources.folders.json")));
-    }
-
-    [TestMethod]
     public void BuildNavStructure()
     {
         var folder = Folder<NavEntry>.From(Routes, r => r.Route);
