@@ -1,68 +1,60 @@
-﻿namespace FolderStructure
+﻿namespace FolderStructure;
+
+public class Folder<T>
 {
-    public class Folder<T>
-    {
-        /// <summary>
-        /// if not null, then it's a leaf item
-        /// </summary>
-        public T? Data { get; init; }
-        /// <summary>
-        /// folder name between separators
-        /// </summary>
-        public string Name { get; init; } = default!;
-        public IEnumerable<Folder<T>> Children { get; init; } = Enumerable.Empty<Folder<T>>();
+	public required string Name { get; init; }
+	public T[] Items { get; init; } = [];
+	public Folder<T>[] Folders { get; init; } = [];
 
-        public static Folder<T> From(IEnumerable<T> items, Func<T, string> pathAccessor, char separator = '/', string rootName = "root")
-        {
-            var allPaths = items.Select(i =>
-            {
-                var folders = pathAccessor.Invoke(i).Split(new char[] { separator }, StringSplitOptions.RemoveEmptyEntries).ToArray();
-                return new FolderInfo()
-                {
-                    Folders = folders,
-                    Count = folders.Length,
-                    Data = i
-                };
-            });
+	public static Folder<T> From(IEnumerable<T> items, Func<T, string> pathAccessor, char separator = '/', string rootName = "root")
+	{
+		var allItems = items.Select(item =>
+		{
+			var folders = pathAccessor.Invoke(item).Split([separator], StringSplitOptions.RemoveEmptyEntries).ToArray();
+			return new ItemInfo()
+			{
+				Segments = folders,
+				Depth = folders.Length,
+				Item = item
+			};
+		}).ToArray();
 
-            var result = new Folder<T>()
-            {
-                Name = rootName,
-                Children = BuildChildrenR(0, allPaths)
-            };
+		var result = new Folder<T>()
+		{
+			Name = rootName,
+			Items = BuildItems(0, allItems),
+			Folders = BuildChildrenR(0, allItems)
+		};
 
-            return result;
+		return result;
 
-            IEnumerable<Folder<T>> BuildChildrenR(int level, IEnumerable<FolderInfo> folderInfos)
-            {
-                List<Folder<T>> results = new();
+		static T[] BuildItems(int depth, IEnumerable<ItemInfo> itemInfos) => [.. itemInfos.Where(io => io.Depth == depth).Select(io => io.Item)];
 
-                var folders = folderInfos
-                    .Where(item => item.Count > level)
-                    .GroupBy(item => item.Folders[level])
-                    .Select(grp =>
-                    {
-                        var data = (level == (grp.First().Count - 1)) ? grp.First().Data : default;
+		static Folder<T>[] BuildChildrenR(int depth, IEnumerable<ItemInfo> itemInfos)
+		{
+			List<Folder<T>> results = [];
 
-                        return new Folder<T>()
-                        {
-                            Name = grp.Key,
-                            Data = data,
-                            Children = BuildChildrenR(level + 1, grp)
-                        };
-                    });
+			var folders = itemInfos
+				.Where(item => item.Depth > depth)
+				.GroupBy(item => item.Segments[depth])
+				.Select(grp =>
+				{					
+					return new Folder<T>()
+					{
+						Name = grp.Key,
+						Folders = BuildChildrenR(depth + 1, grp),
+						Items = BuildItems(depth + 1, grp),
+					};
+				});
+			results.AddRange(folders);
+			return [.. results];
+		}
+	}
 
-                results.AddRange(folders);
-
-                return results;
-            }
-        }
-
-        private class FolderInfo
-        {
-            public string[] Folders { get; init; } = Enumerable.Empty<string>().ToArray();
-            public int Count { get; init; }
-            public T? Data { get; init; }
-        }
-    }
+	private class ItemInfo
+	{
+		public string[] Segments { get; init; } = [];
+		public int Depth { get; init; }
+		public required T Item { get; init; }
+	}
 }
