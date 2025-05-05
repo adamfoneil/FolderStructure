@@ -1,5 +1,8 @@
-﻿namespace FolderStructure;
+﻿using System.Diagnostics;
 
+namespace FolderStructure;
+
+[DebuggerDisplay("{Name} - {Items.Length} items, {Folders.Length} subfolders")]
 public class Folder<T>
 {
 	public required string Name { get; init; }
