@@ -7,7 +7,7 @@ public class Folder<T>
 {
 	public required string Name { get; init; }
 	public T[] Items { get; init; } = [];
-	public Folder<T>[] Folders { get; init; } = [];
+	public Folder<T>[] Subfolders { get; init; } = [];
 
 	public static Folder<T> From(IEnumerable<T> items, Func<T, string> pathAccessor, char separator = '/', string rootName = "root")
 	{
@@ -26,7 +26,7 @@ public class Folder<T>
 		{
 			Name = rootName,
 			Items = BuildItems(0, allItems),
-			Folders = BuildChildrenR(0, allItems)
+			Subfolders = BuildChildrenR(0, allItems)
 		};
 
 		return result;
@@ -45,7 +45,7 @@ public class Folder<T>
 					return new Folder<T>()
 					{
 						Name = grp.Key,
-						Folders = BuildChildrenR(depth + 1, grp),
+						Subfolders = BuildChildrenR(depth + 1, grp),
 						Items = BuildItems(depth + 1, grp),
 					};
 				});
