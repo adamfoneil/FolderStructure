@@ -7,6 +7,7 @@ public class Folder<T>
 {
 	public required string Name { get; init; }
 	public required string Path { get; init; }
+	public string? ParentPath { get; init; }
 	public required bool IsRoot { get; init; }
 	public T[] Items { get; init; } = [];
 	public Folder<T>[] Subfolders { get; init; } = [];
@@ -48,14 +49,15 @@ public class Folder<T>
 				.Where(item => item.Depth > depth)
 				.GroupBy(item => item.Segments[depth])
 				.Select(grp =>
-				{
-					var newParentPath = $"{parentPath}{separator}{grp.Key}";
+				{					
+					var currentPath = $"{parentPath}{separator}{grp.Key}";
 					return new Folder<T>()
 					{
 						IsRoot = false,
 						Name = grp.Key,
-						Path = newParentPath,
-						Subfolders = BuildChildrenR(depth + 1, grp, separator, newParentPath),
+						Path = currentPath,
+						ParentPath = (parentPath.Length == 0) ? separator.ToString() : parentPath,
+						Subfolders = BuildChildrenR(depth + 1, grp, separator, currentPath),
 						Items = BuildItems(depth + 1, grp),
 					};
 				});
