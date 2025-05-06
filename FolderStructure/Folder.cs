@@ -2,14 +2,19 @@
 
 namespace FolderStructure;
 
-[DebuggerDisplay("{Name} - {Items.Length} items, {Folders.Length} subfolders")]
+[DebuggerDisplay("{Name} - {Items.Length} items, {Subfolders.Length} subfolders")]
 public class Folder<T>
 {
 	public required string Name { get; init; }
+	public required string Path { get; init; }
+	public required bool IsRoot { get; init; }
 	public T[] Items { get; init; } = [];
 	public Folder<T>[] Subfolders { get; init; } = [];
 
-	public static Folder<T> From(IEnumerable<T> items, Func<T, string> pathAccessor, char separator = '/', string rootName = "root")
+	/// <summary>
+	/// scans an IEnumerable of items to build a tree structure from a given path accessor and separator character
+	/// </summary>
+	public static Folder<T> From(IEnumerable<T> items, Func<T, string> pathAccessor, char separator = '/')
 	{
 		var allItems = items.Select(item =>
 		{
@@ -24,16 +29,18 @@ public class Folder<T>
 
 		var result = new Folder<T>()
 		{
-			Name = rootName,
+			Name = separator.ToString(),
+			Path = separator.ToString(),
+			IsRoot = true,
 			Items = BuildItems(0, allItems),
-			Subfolders = BuildChildrenR(0, allItems)
+			Subfolders = BuildChildrenR(0, allItems, separator, string.Empty)
 		};
 
 		return result;
 
 		static T[] BuildItems(int depth, IEnumerable<ItemInfo> itemInfos) => [.. itemInfos.Where(io => io.Depth == depth).Select(io => io.Item)];
 
-		static Folder<T>[] BuildChildrenR(int depth, IEnumerable<ItemInfo> itemInfos)
+		static Folder<T>[] BuildChildrenR(int depth, IEnumerable<ItemInfo> itemInfos, char separator, string parentPath)
 		{
 			List<Folder<T>> results = [];
 
@@ -41,11 +48,14 @@ public class Folder<T>
 				.Where(item => item.Depth > depth)
 				.GroupBy(item => item.Segments[depth])
 				.Select(grp =>
-				{					
+				{
+					var newParentPath = $"{parentPath}{separator}{grp.Key}";
 					return new Folder<T>()
 					{
+						IsRoot = false,
 						Name = grp.Key,
-						Subfolders = BuildChildrenR(depth + 1, grp),
+						Path = newParentPath,
+						Subfolders = BuildChildrenR(depth + 1, grp, separator, newParentPath),
 						Items = BuildItems(depth + 1, grp),
 					};
 				});

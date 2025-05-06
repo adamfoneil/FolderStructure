@@ -15,14 +15,17 @@ public class SampleStructures
         new() { Route = "Ops/Thing1", Href = "/help/kb/ops/welcome.html" },
 		new() { Route = "Ops/Thing1", Href = "/help/kb/ops/detail.html" },
 		new() { Route = "Ops/Thing2", Href = "/help/kb/ops/index.html" },
-		new() { Route = "Ops/Thing2", Href = "/help/kb/ops/detail.html" }
+		new() { Route = "Ops/Thing2", Href = "/help/kb/ops/detail.html" },
+		new() { Route = "Ops/Evermore/Warpsie", Href = "/help/kb/ops/evermore/index.html" },
+		new() { Route = "Ops/Evermore/Warpsie", Href = "/help/kb/ops/evermore/detail.html" }
 	];
 
     [TestMethod]
     public void BuildNavStructure()
     {
         var folder = Folder<NavEntry>.From(Routes, r => r.Route);
-    }
+        var json = JsonSerializer.Serialize(folder, new JsonSerializerOptions { WriteIndented = true });
+	}
 
     public class NavEntry
     {
